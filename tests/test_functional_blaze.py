@@ -7,6 +7,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re
 
+
 class New3(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Chrome()
@@ -21,6 +22,8 @@ class New3(unittest.TestCase):
         # ERROR: Caught exception [ERROR: Unsupported command [resizeWindow | 1536,825 | ]]
         driver.get("http://localhost:5000/")
         # ERROR: Caught exception [unknown command [waitFor]]
+
+        time.sleep(3)
         driver.find_element(By.ID, "add-to-cart-2").click()
         time.sleep(3)  # Wait for action to complete
         
