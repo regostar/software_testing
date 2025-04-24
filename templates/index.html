@@ -18,14 +18,15 @@
     }
     
     body {
-      font-family: 'Roboto Condensed', sans-serif;
-      background: linear-gradient(to bottom, #0B1622, #182848);
-      color: white;
-      background-image: url('https://wallpapercave.com/wp/wp8659603.jpg');
-      background-size: cover;
-      background-attachment: fixed;
-      background-position: center;
+      font-family: 'Roboto', sans-serif;
+      padding: 20px;
+      background-color: #1a1a1a;
+      color: #fff;
       min-height: 100vh;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://cdn2.unrealengine.com/25br-s25-egs-launcher-pdp-2560x1440-2560x1440-2e92fe25e775.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
     }
     
     .container {
@@ -38,7 +39,7 @@
     h1, h2 {
       text-transform: uppercase;
       letter-spacing: 2px;
-      text-shadow: 0 0 10px var(--fortnite-blue);
+      text-shadow: 0 0 10px rgba(255, 0, 102, 0.5), 0 0 20px rgba(255, 0, 102, 0.3);
     }
     
     .weapon-card {
@@ -47,6 +48,19 @@
       border: none;
       color: white;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .weapon-card .card-img-top {
+      transition: transform 0.3s;
+      background: linear-gradient(45deg, #2c2c2c, #1a1a1a);
+      padding: 10px;
+    }
+    
+    .weapon-card:hover .card-img-top {
+      transform: scale(1.05);
     }
     
     .weapon-card:hover {
@@ -73,59 +87,55 @@
     }
     
     .btn-primary {
-      background: var(--fortnite-blue);
+      background: linear-gradient(45deg, #ff0066, #ff6b6b);
       border: none;
       text-transform: uppercase;
       font-weight: bold;
       letter-spacing: 1px;
-      box-shadow: 0 0 10px rgba(28, 154, 214, 0.5);
+      padding: 10px 20px;
+      transition: all 0.3s;
     }
     
     .btn-primary:hover {
-      background: #157ab1;
-      transform: scale(1.05);
+      background: linear-gradient(45deg, #ff6b6b, #ff0066);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(255, 0, 102, 0.3);
     }
     
-    .rarity-Common, .rarity-Uncommon, .rarity-Rare, .rarity-Epic, .rarity-Legendary {
-      padding: 3px 8px;
-      border-radius: 3px;
-      font-weight: bold;
-      display: inline-block;
-      margin-bottom: 5px;
+    .rarity-common {
+      color: #b1b1b1;
+      text-shadow: 0 0 5px rgba(177, 177, 177, 0.5);
     }
     
-    .rarity-Common {
-      background-color: var(--rarity-common);
-      color: #333;
+    .rarity-uncommon {
+      color: #2ecc71;
+      text-shadow: 0 0 5px rgba(46, 204, 113, 0.5);
     }
     
-    .rarity-Uncommon {
-      background-color: var(--rarity-uncommon);
-      color: #333;
+    .rarity-rare {
+      color: #3498db;
+      text-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
     }
     
-    .rarity-Rare {
-      background-color: var(--rarity-rare);
-      color: white;
+    .rarity-epic {
+      color: #9b59b6;
+      text-shadow: 0 0 5px rgba(155, 89, 182, 0.5);
     }
     
-    .rarity-Epic {
-      background-color: var(--rarity-epic);
-      color: white;
-    }
-    
-    .rarity-Legendary {
-      background-color: var(--rarity-legendary);
-      color: white;
+    .rarity-legendary {
+      color: #f1c40f;
+      text-shadow: 0 0 5px rgba(241, 196, 15, 0.5);
     }
     
     .stat-box {
-      background: rgba(20, 33, 61, 0.7);
-      padding: 5px;
-      margin: 5px 0;
-      border-radius: 3px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px;
+      border-radius: 4px;
+      margin-top: 10px;
       display: flex;
       justify-content: space-between;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
     }
     
     .cart-item {
@@ -191,8 +201,15 @@
   </style>
 </head>
 <body>
+  <div class="banner-container mb-5" style="width: 100%; max-height: 300px; overflow: hidden; position: relative; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+    <img src="/static/images/fortnite_big.jpg" alt="Fortnite Banner" style="width: 100%; height: 300px; object-fit: cover;">
+    <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 20px;">
+      <h1 class="text-center mb-0" style="font-size: 3rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px rgba(255, 0, 102, 0.5), 0 0 20px rgba(255, 0, 102, 0.3);">Fortnite</h1>
+    </div>
+  </div>
+
   <div class="container py-4 my-4">
-    <h1 class="mb-4 text-center">🛒 Fortnite Battle Royale Shop</h1>
+    <h2 class="mb-4 text-center">🛒 Battle Royale Shop</h2>
     
     <div id="vbucks-counter" class="text-center">
       <img src="/static/images/vbucks.png" alt="V-Bucks" class="vbucks-icon">
