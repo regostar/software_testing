@@ -13,7 +13,7 @@ A web application that simulates a Fortnite item shop with a shopping cart funct
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd fortnite_shop
+cd software_testing
 ```
 
 2. Install dependencies:
@@ -59,7 +59,7 @@ https://chromewebstore.google.com/detail/mbopgmdnpcbohhpnfglgohlbhfongabi?utm_so
 ## Project Structure
 
 ```
-fortnite_shop/
+software_testing/
 ├── app.py              # Main Flask application
 ├── requirements.txt    # Project dependencies
 ├── templates/         
