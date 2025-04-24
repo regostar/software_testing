@@ -1,9 +1,9 @@
-from flask import Flask, session, jsonify, request, render_template
+from flask import Flask, session, jsonify, request, render_template, url_for
 
 app = Flask(__name__)
 app.secret_key = "replace-with-your-own-secret"
 
-# Enhanced weapon catalog with prices and better rarities
+# Enhanced weapon catalog with prices and better rarities - now using local images
 WEAPONS = [
     {
         "id": 1,
@@ -12,7 +12,7 @@ WEAPONS = [
         "damage": 35,
         "fire_rate": 5.5,
         "price": 800,
-        "image": "https://fortnite-api.com/images/cosmetics/br/bid_116_assassin/icon.png"
+        "image": "assault_rifle.png"
     },
     {
         "id": 2,
@@ -21,7 +21,7 @@ WEAPONS = [
         "damage": 80,
         "fire_rate": 1.0,
         "price": 1200,
-        "image": "https://fortnite-api.com/images/cosmetics/br/eid_pumpernickel/icon.png"
+        "image": "pump_shotgun.png"
     },
     {
         "id": 3,
@@ -30,7 +30,7 @@ WEAPONS = [
         "damage": 42,
         "fire_rate": 5.5,
         "price": 1500,
-        "image": "https://fortnite-api.com/images/cosmetics/br/cid_083_athena_commando_f_space/icon.png"
+        "image": "scar.png"
     },
     {
         "id": 4,
@@ -39,7 +39,7 @@ WEAPONS = [
         "damage": 25,
         "fire_rate": 10,
         "price": 500,
-        "image": "https://fortnite-api.com/images/cosmetics/br/eid_smorgasbord/icon.png"
+        "image": "smg.png"
     },
     {
         "id": 5,
@@ -48,7 +48,7 @@ WEAPONS = [
         "damage": 37,
         "fire_rate": 4.0,
         "price": 1200,
-        "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_272_athena_commando_f_skirmishpink/icon.png"
+        "image": "burst_rifle.png"
     },
     {
         "id": 6,
@@ -57,7 +57,7 @@ WEAPONS = [
         "damage": 150,
         "fire_rate": 0.7,
         "price": 2000,
-        "image": "https://fortnite-api.com/images/cosmetics/br/harvest_id_110_darkninja/icon.png"
+        "image": "heavy_sniper.png"
     },
     {
         "id": 7,
@@ -66,7 +66,7 @@ WEAPONS = [
         "damage": 72,
         "fire_rate": 1.5,
         "price": 600,
-        "image": "https://fortnite-api.com/images/cosmetics/br/cid_258_athena_commando_m_robottrouble/icon.png"
+        "image": "tactical_shotgun.png"
     },
     {
         "id": 8,
@@ -75,7 +75,7 @@ WEAPONS = [
         "damage": 120,
         "fire_rate": 0.75,
         "price": 1800,
-        "image": "https://fortnite-api.com/images/cosmetics/br/eid_rocket/icon.png"
+        "image": "rocket_launcher.png"
     }
 ]
 
@@ -89,14 +89,25 @@ def index():
 
 @app.route("/api/weapons")
 def list_weapons():
-    return jsonify(WEAPONS)
+    # Add the full URL for images
+    weapons_with_urls = []
+    for weapon in WEAPONS:
+        weapon_copy = weapon.copy()
+        weapon_copy["image"] = url_for('static', filename=f'images/{weapon["image"]}')
+        weapons_with_urls.append(weapon_copy)
+    return jsonify(weapons_with_urls)
 
 @app.route("/api/cart", methods=["GET", "POST"])
 def manage_cart():
     if request.method == "GET":
         # return full weapon objects in cart
         cart_ids = session["cart"]
-        items = [w for w in WEAPONS if w["id"] in cart_ids]
+        items = []
+        for w in WEAPONS:
+            if w["id"] in cart_ids:
+                weapon_copy = w.copy()
+                weapon_copy["image"] = url_for('static', filename=f'images/{w["image"]}')
+                items.append(weapon_copy)
         return jsonify(items)
     else:
         data = request.get_json() or {}
