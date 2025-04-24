@@ -134,11 +134,35 @@
       border-radius: 5px;
       padding: 10px;
       transition: all 0.2s;
+      position: relative;
     }
     
     .cart-item:hover {
       transform: translateY(-3px);
       box-shadow: 0 5px 15px rgba(28, 154, 214, 0.4);
+    }
+    
+    .remove-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: rgba(220, 53, 69, 0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .remove-btn:hover {
+      background: rgba(220, 53, 69, 1);
+      transform: scale(1.1);
     }
     
     .cart-empty {
@@ -247,6 +271,7 @@
             ${items.map(w => `
               <div class="col-md-3 mb-3">
                 <div class="cart-item">
+                  <button class="remove-btn" onclick="removeFromCart(${w.id})">✕</button>
                   <img src="${w.image}" class="img-fluid mb-2" alt="${w.name}">
                   <h5>${w.name}</h5>
                   <span class="rarity-${w.rarity}">${w.rarity}</span>
@@ -333,6 +358,44 @@
             document.body.removeChild(flashMessage);
           }, 300);
         }, 2000);
+      }
+    }
+
+    // Remove an item from the cart
+    async function removeFromCart(id) {
+      const res = await fetch(`/api/cart/remove/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (res.ok) {
+        loadCart();
+        
+        // Add animation flash effect on success
+        const flashMessage = document.createElement('div');
+        flashMessage.textContent = 'Item removed from locker!';
+        flashMessage.style.position = 'fixed';
+        flashMessage.style.top = '20px';
+        flashMessage.style.left = '50%';
+        flashMessage.style.transform = 'translateX(-50%)';
+        flashMessage.style.backgroundColor = '#dc3545';
+        flashMessage.style.color = 'white';
+        flashMessage.style.padding = '10px 20px';
+        flashMessage.style.borderRadius = '5px';
+        flashMessage.style.zIndex = '1000';
+        flashMessage.style.opacity = '0';
+        flashMessage.style.transition = 'opacity 0.3s';
+        
+        document.body.appendChild(flashMessage);
+        setTimeout(() => { flashMessage.style.opacity = '1'; }, 100);
+        setTimeout(() => { 
+          flashMessage.style.opacity = '0';
+          setTimeout(() => {
+            document.body.removeChild(flashMessage);
+          }, 300);
+        }, 2000);
+      } else {
+        const err = await res.json();
+        alert(err.error || 'Failed to remove item from locker');
       }
     }
 

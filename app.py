@@ -113,5 +113,13 @@ def clear_cart():
     session.modified = True
     return jsonify({"message": "Cart cleared"}), 200
 
+@app.route("/api/cart/remove/<int:item_id>", methods=["POST"])
+def remove_from_cart(item_id):
+    if item_id in session["cart"]:
+        session["cart"].remove(item_id)
+        session.modified = True
+        return jsonify({"message": "Item removed from cart"}), 200
+    return jsonify({"error": "Item not in cart"}), 404
+
 if __name__ == "__main__":
     app.run(debug=True) 
