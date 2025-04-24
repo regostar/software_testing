@@ -210,7 +210,7 @@
       </div>
     </div>
     <div class="text-center mt-4" id="cart-actions" style="display: none;">
-      <button class="btn btn-danger" onclick="clearCart()">Clear Locker</button>
+      <button class="btn btn-danger" id="clear-cart-btn" onclick="clearCart()">Clear Locker</button>
     </div>
   </div>
 
@@ -239,7 +239,7 @@
                 <span>💰 Price</span>
                 <span>${w.price} V-Bucks</span>
               </div>
-              <button class="btn btn-primary w-100 mt-3" onclick="addToCart(${w.id})">
+              <button class="btn btn-primary w-100 mt-3 add-to-cart-btn" id="add-to-cart-${w.id}" onclick="addToCart(${w.id})">
                 Add to Locker
               </button>
             </div>
@@ -270,8 +270,8 @@
           <div class="row">
             ${items.map(w => `
               <div class="col-md-3 mb-3">
-                <div class="cart-item">
-                  <button class="remove-btn" onclick="removeFromCart(${w.id})">✕</button>
+                <div class="cart-item" id="cart-item-${w.id}">
+                  <button class="remove-btn" id="remove-item-${w.id}" onclick="removeFromCart(${w.id})">✕</button>
                   <img src="${w.image}" class="img-fluid mb-2" alt="${w.name}">
                   <h5>${w.name}</h5>
                   <span class="rarity-${w.rarity}">${w.rarity}</span>
