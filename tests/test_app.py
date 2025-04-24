@@ -58,7 +58,7 @@ def test_empty_cart(client):
     
     # Parse the JSON response data
     
-    # Verify the response is a list
+    # Verify the response is a list (Tip Google search how to use assert with isinstance())
    
     # Verify the cart is empty (new session)
 
