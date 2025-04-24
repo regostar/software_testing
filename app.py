@@ -1,7 +1,10 @@
 from flask import Flask, session, jsonify, request, render_template, url_for
 
 app = Flask(__name__)
-app.secret_key = "replace-with-your-own-secret"
+# app.secret_key = "replace-with-your-own-secret"
+app.secret_key = "r43irh4i3h54hg4iughnigu4bn3g"
+# move to .env later
+
 
 # Enhanced weapon catalog with prices and better rarities - now using local images
 WEAPONS = [
@@ -78,15 +81,19 @@ WEAPONS = [
         "image": "rocket_launcher.png"
     }
 ]
+# this will be in database ideally
 
+# initialize a cart for a session
 @app.before_request
 def ensure_cart():
     session.setdefault("cart", [])
 
+# home page
 @app.route("/")
 def index():
     return render_template("index.html")
 
+# list all weapons
 @app.route("/api/weapons")
 def list_weapons():
     # Add the full URL for images
@@ -97,6 +104,7 @@ def list_weapons():
         weapons_with_urls.append(weapon_copy)
     return jsonify(weapons_with_urls)
 
+# manage cart
 @app.route("/api/cart", methods=["GET", "POST"])
 def manage_cart():
     if request.method == "GET":
@@ -118,11 +126,14 @@ def manage_cart():
         session.modified = True
         return jsonify({"message": "Added to cart"}), 201
 
+# clear cart
 @app.route("/api/cart/clear", methods=["POST"])
 def clear_cart():
     session["cart"] = []
     session.modified = True
     return jsonify({"message": "Cart cleared"}), 200
+
+
 
 @app.route("/api/cart/remove/<int:item_id>", methods=["POST"])
 def remove_from_cart(item_id):
