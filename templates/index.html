@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fortnite Shop</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fortnite-blue: #1C9AD6;
+      --fortnite-purple: #9D4EDD;
+      --fortnite-yellow: #F2D422;
+      --rarity-common: #b1b1b1;
+      --rarity-uncommon: #5CFC67;
+      --rarity-rare: #3DADF2;
+      --rarity-epic: #BC5CFC;
+      --rarity-legendary: #FF983F;
+    }
+    
+    body {
+      font-family: 'Roboto Condensed', sans-serif;
+      background: linear-gradient(to bottom, #0B1622, #182848);
+      color: white;
+      background-image: url('https://wallpapercave.com/wp/wp8659603.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      min-height: 100vh;
+    }
+    
+    .container {
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(28, 154, 214, 0.5);
+    }
+    
+    h1, h2 {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px var(--fortnite-blue);
+    }
+    
+    .weapon-card {
+      transition: all 0.3s ease;
+      background: rgba(20, 30, 48, 0.8);
+      border: none;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    
+    .weapon-card:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 10px 25px rgba(28, 154, 214, 0.6);
+    }
+    
+    .weapon-card .card-title {
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    
+    .card-body {
+      background: #14213d;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+    
+    img {
+      max-height: 140px;
+      object-fit: contain;
+      background: #0a1428;
+      padding: 10px;
+    }
+    
+    .btn-primary {
+      background: var(--fortnite-blue);
+      border: none;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 0 10px rgba(28, 154, 214, 0.5);
+    }
+    
+    .btn-primary:hover {
+      background: #157ab1;
+      transform: scale(1.05);
+    }
+    
+    .rarity-Common, .rarity-Uncommon, .rarity-Rare, .rarity-Epic, .rarity-Legendary {
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-weight: bold;
+      display: inline-block;
+      margin-bottom: 5px;
+    }
+    
+    .rarity-Common {
+      background-color: var(--rarity-common);
+      color: #333;
+    }
+    
+    .rarity-Uncommon {
+      background-color: var(--rarity-uncommon);
+      color: #333;
+    }
+    
+    .rarity-Rare {
+      background-color: var(--rarity-rare);
+      color: white;
+    }
+    
+    .rarity-Epic {
+      background-color: var(--rarity-epic);
+      color: white;
+    }
+    
+    .rarity-Legendary {
+      background-color: var(--rarity-legendary);
+      color: white;
+    }
+    
+    .stat-box {
+      background: rgba(20, 33, 61, 0.7);
+      padding: 5px;
+      margin: 5px 0;
+      border-radius: 3px;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .cart-item {
+      background: rgba(20, 33, 61, 0.7);
+      border: 1px solid var(--fortnite-blue);
+      border-radius: 5px;
+      padding: 10px;
+      transition: all 0.2s;
+    }
+    
+    .cart-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(28, 154, 214, 0.4);
+    }
+    
+    .cart-empty {
+      padding: 30px;
+      text-align: center;
+      font-size: 1.2rem;
+      color: #aaa;
+      background: rgba(20, 33, 61, 0.5);
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+    
+    #vbucks-counter {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--fortnite-yellow);
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .vbucks-icon {
+      height: 30px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-4 my-4">
+    <h1 class="mb-4 text-center">🛒 Fortnite Battle Royale Shop</h1>
+    
+    <div id="vbucks-counter" class="text-center">
+      <img src="https://fortnite-api.com/images/vbucks.png" alt="V-Bucks" class="vbucks-icon">
+      <span>1,000 V-Bucks Available</span>
+    </div>
+
+    <div class="row" id="catalog"></div>
+
+    <hr class="my-5" style="border-color: var(--fortnite-blue);">
+
+    <h2 class="mb-4">Your Locker</h2>
+    <div id="cart">
+      <div class="cart-empty">
+        Your locker is empty. Add some weapons!
+      </div>
+    </div>
+    <div class="text-center mt-4" id="cart-actions" style="display: none;">
+      <button class="btn btn-danger" onclick="clearCart()">Clear Locker</button>
+    </div>
+  </div>
+
+  <script>
+    // Fetch and render the catalog
+    async function loadCatalog() {
+      const res = await fetch('/api/weapons');
+      const weapons = await res.json();
+      const catalog = document.getElementById('catalog');
+      catalog.innerHTML = weapons.map(w => `
+        <div class="col-md-3 mb-4">
+          <div class="card weapon-card">
+            <img src="${w.image}" class="card-img-top" alt="${w.name}">
+            <div class="card-body">
+              <h5 class="card-title">${w.name}</h5>
+              <span class="rarity-${w.rarity}">${w.rarity}</span>
+              <div class="stat-box">
+                <span>💥 Damage</span>
+                <span>${w.damage}</span>
+              </div>
+              <div class="stat-box">
+                <span>🔥 Fire Rate</span>
+                <span>${w.fire_rate}</span>
+              </div>
+              <div class="stat-box">
+                <span>💰 Price</span>
+                <span>${w.price} V-Bucks</span>
+              </div>
+              <button class="btn btn-primary w-100 mt-3" onclick="addToCart(${w.id})">
+                Add to Locker
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Fetch and render the cart
+    async function loadCart() {
+      const res = await fetch('/api/cart');
+      const items = await res.json();
+      const cart = document.getElementById('cart');
+      const cartActions = document.getElementById('cart-actions');
+      
+      if (items.length === 0) {
+        cart.innerHTML = `
+          <div class="cart-empty">
+            Your locker is empty. Add some weapons!
+          </div>
+        `;
+        cartActions.style.display = 'none';
+      } else {
+        cartActions.style.display = 'block';
+        let totalPrice = items.reduce((sum, item) => sum + item.price, 0);
+        
+        cart.innerHTML = `
+          <div class="row">
+            ${items.map(w => `
+              <div class="col-md-3 mb-3">
+                <div class="cart-item">
+                  <img src="${w.image}" class="img-fluid mb-2" alt="${w.name}">
+                  <h5>${w.name}</h5>
+                  <span class="rarity-${w.rarity}">${w.rarity}</span>
+                  <div class="mt-2">${w.price} V-Bucks</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="mt-4 p-3 bg-dark rounded">
+            <h4 class="text-end">Total: ${totalPrice} V-Bucks</h4>
+          </div>
+        `;
+      }
+    }
+
+    // Add a weapon to the cart
+    async function addToCart(id) {
+      const res = await fetch('/api/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+      if (res.ok) {
+        loadCart();
+        
+        // Add animation flash effect on success
+        const flashMessage = document.createElement('div');
+        flashMessage.textContent = 'Item added to locker!';
+        flashMessage.style.position = 'fixed';
+        flashMessage.style.top = '20px';
+        flashMessage.style.left = '50%';
+        flashMessage.style.transform = 'translateX(-50%)';
+        flashMessage.style.backgroundColor = 'var(--fortnite-blue)';
+        flashMessage.style.color = 'white';
+        flashMessage.style.padding = '10px 20px';
+        flashMessage.style.borderRadius = '5px';
+        flashMessage.style.zIndex = '1000';
+        flashMessage.style.opacity = '0';
+        flashMessage.style.transition = 'opacity 0.3s';
+        
+        document.body.appendChild(flashMessage);
+        setTimeout(() => { flashMessage.style.opacity = '1'; }, 100);
+        setTimeout(() => { 
+          flashMessage.style.opacity = '0';
+          setTimeout(() => {
+            document.body.removeChild(flashMessage);
+          }, 300);
+        }, 2000);
+      } else {
+        const err = await res.json();
+        alert(err.error || 'Failed to add to locker');
+      }
+    }
+
+    // Clear the cart
+    async function clearCart() {
+      const res = await fetch('/api/cart/clear', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (res.ok) {
+        loadCart();
+        
+        // Add animation flash effect on success
+        const flashMessage = document.createElement('div');
+        flashMessage.textContent = 'Locker cleared!';
+        flashMessage.style.position = 'fixed';
+        flashMessage.style.top = '20px';
+        flashMessage.style.left = '50%';
+        flashMessage.style.transform = 'translateX(-50%)';
+        flashMessage.style.backgroundColor = '#dc3545';
+        flashMessage.style.color = 'white';
+        flashMessage.style.padding = '10px 20px';
+        flashMessage.style.borderRadius = '5px';
+        flashMessage.style.zIndex = '1000';
+        flashMessage.style.opacity = '0';
+        flashMessage.style.transition = 'opacity 0.3s';
+        
+        document.body.appendChild(flashMessage);
+        setTimeout(() => { flashMessage.style.opacity = '1'; }, 100);
+        setTimeout(() => { 
+          flashMessage.style.opacity = '0';
+          setTimeout(() => {
+            document.body.removeChild(flashMessage);
+          }, 300);
+        }, 2000);
+      }
+    }
+
+    // Initialization
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCatalog();
+      loadCart();
+    });
+  </script>
+</body>
+</html> 
